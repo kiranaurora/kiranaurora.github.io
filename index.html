@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linkify - Jasa Pembuatan Link-Bio & Kartu Nama Digital</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reset dan variabel */
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #4cc9f0;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4bb543;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: #fefefe;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        section {
+            padding: 80px 0;
+        }
+        
+        h1, h2, h3 {
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        
+        h1 {
+            font-size: 3.2rem;
+        }
+        
+        h2 {
+            font-size: 2.5rem;
+            text-align: center;
+            position: relative;
+            margin-bottom: 50px;
+        }
+        
+        h2::after {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 4px;
+            background: var(--accent);
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            background: var(--primary);
+            color: white;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        
+        .btn:hover {
+            background: var(--secondary);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+        
+        .btn-accent {
+            background: var(--accent);
+        }
+        
+        /* Header & Navigation */
+        header {
+            background: white;
+            box-shadow: var(--shadow);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo span {
+            color: var(--accent);
+        }
+        
+        .logo-icon {
+            margin-right: 10px;
+            font-size: 1.8rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 30px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+        
+        /* Halaman Cover */
+        #cover {
+            height: 100vh;
+            background: linear-gradient(rgba(67, 97, 238, 0.85), rgba(58, 12, 163, 0.9)), url('kerkom.jpeg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            display: flex;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .cover-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .cover-content h1 {
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        
+        .cover-content p {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+        }
+        
+        /* About Us */
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+        
+        .about-text {
+            flex: 1;
+        }
+        
+        .about-img {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .about-img img {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+        }
+        
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .feature {
+            flex: 1;
+            min-width: 250px;
+            padding: 25px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: var(--transition);
+        }
+        
+        .feature:hover {
+            transform: translateY(-10px);
+        }
+        
+        .feature i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        /* Portfolio */
+        #portfolio {
+            background: #f8f9fa;
+        }
+        
+        .portfolio-filter {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 40px;
+        }
+        
+        .filter-btn {
+            padding: 8px 20px;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .portfolio-item {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        
+        .portfolio-item:hover {
+            transform: translateY(-10px);
+        }
+        
+        .portfolio-img {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .portfolio-info {
+            padding: 20px;
+        }
+        
+        /* Contact & Preview/Rating */
+        .contact-preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 50px;
+        }
+        
+        .contact-form {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .preview-rating {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .preview-container {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .preview-qr {
+            width: 150px;
+            height: 150px;
+            background: #f0f0f0;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+        }
+        
+        .preview-qr i {
+            font-size: 3rem;
+            color: var(--primary);
+        }
+        
+        /* RATING HORIZONTAL */
+        .rating-section {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 60px 0;
+            margin-top: 40px;
+        }
+        
+        .rating-container-horizontal {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        
+        .rating-left {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .rating-right {
+            flex: 2;
+            min-width: 300px;
+        }
+        
+        .rating-box {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .rating-stars {
+            font-size: 2rem;
+            color: #ffc107;
+            margin-bottom: 15px;
+        }
+        
+        .rating-value {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            line-height: 1;
+        }
+        
+        .rating-count {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .testimonials-container {
+            display: flex;
+            gap: 25px;
+            overflow-x: auto;
+            padding: 10px 5px 20px;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+        }
+        
+        .testimonials-container::-webkit-scrollbar {
+            height: 6px;
+        }
+        
+        .testimonials-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+        
+        .testimonials-container::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+        }
+        
+        .testimonial-horizontal {
+            flex: 0 0 350px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 20px;
+            font-size: 1.05rem;
+            line-height: 1.6;
+        }
+        
+        .testimonial-author-horizontal {
+            display: flex;
+            align-items: center;
+        }
+        
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .author-info h4 {
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+        
+        .author-info p {
+            margin: 0;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 3px;
+            background: var(--accent);
+            bottom: -8px;
+            left: 0;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .social-links a:hover {
+            background: var(--accent);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+        
+        /* Tagline */
+        .tagline {
+            font-size: 1.1rem;
+            color: var(--accent);
+            font-weight: 600;
+            margin-top: 5px;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Portfolio Image Overlay */
+        .portfolio-overlay {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .portfolio-overlay::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.3));
+            transition: var(--transition);
+        }
+        
+        .portfolio-item:hover .portfolio-overlay::after {
+            background: linear-gradient(to bottom, rgba(67, 97, 238, 0.7), rgba(58, 12, 163, 0.8));
+        }
+        
+        /* Responsiveness */
+        @media (max-width: 992px) {
+            h1 {
+                font-size: 2.8rem;
+            }
+            
+            h2 {
+                font-size: 2.2rem;
+            }
+            
+            .about-content {
+                flex-direction: column;
+            }
+            
+            .rating-container-horizontal {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .rating-box {
+                max-width: 400px;
+                margin: 0 auto;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 70px);
+                background: white;
+                flex-direction: column;
+                align-items: center;
+                padding-top: 50px;
+                transition: var(--transition);
+                box-shadow: var(--shadow);
+            }
+            
+            .nav-links.active {
+                left: 0;
+            }
+            
+            .nav-links li {
+                margin: 15px 0;
+            }
+            
+            h1 {
+                font-size: 2.4rem;
+            }
+            
+            h2 {
+                font-size: 2rem;
+            }
+            
+            .contact-preview-container {
+                flex-direction: column;
+            }
+            
+            .tagline {
+                font-size: 1rem;
+            }
+            
+            .testimonial-horizontal {
+                flex: 0 0 300px;
+            }
+            
+            .rating-value {
+                font-size: 3.5rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.8rem;
+            }
+            
+            section {
+                padding: 60px 0;
+            }
+            
+            .logo {
+                font-size: 1.7rem;
+            }
+            
+            .logo-icon {
+                font-size: 1.5rem;
+            }
+            
+            .rating-value {
+                font-size: 3rem;
+            }
+            
+            .testimonial-horizontal {
+                flex: 0 0 280px;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#cover" class="logo">
+                    <i class="fas fa-link logo-icon"></i>
+                    Linkify
+                </a>
+                
+                <ul class="nav-links">
+                    <li><a href="#cover">Beranda</a></li>
+                    <li><a href="#about">Tentang Kami</a></li>
+                    <li><a href="#portfolio">Portfolio</a></li>
+                    <li><a href="#contact">Kontak</a></li>
+                </ul>
+                
+                <div class="hamburger">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Halaman Cover -->
+    <section id="cover">
+        <div class="container">
+            <div class="cover-content">
+                <h1>Linkify - Simplify Your Digital Presence</h1>
+                <p>Kami mengubah semua tautan dan kontak Anda menjadi satu halaman yang elegan, profesional, dan mudah dikelola. Jadikan kehadiran digital Anda lebih sederhana dan efektif.</p>
+                <a href="#about" class="btn">Pelajari Lebih Lanjut</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Us -->
+    <section id="about">
+        <div class="container">
+            <h2>Tentang Linkify</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p><strong>Linkify</strong> didirikan pada tahun 2020 dengan misi untuk menyederhanakan kehadiran digital individu dan bisnis. Kami percaya bahwa setiap orang dan bisnis layak memiliki presensi online yang profesional dan mudah diakses.</p>
+                    <p>Dengan solusi link-bio dan kartu nama digital kami, Anda dapat menyatukan semua tautan media sosial, website, portofolio, dan informasi kontak ke dalam satu halaman yang menarik dan responsif. Tidak perlu lagi membagikan banyak tautan - cukup satu link untuk semuanya!</p>
+                    <p>Tim kami terdiri dari desainer UX/UI berpengalaman dan developer yang selalu mengikuti tren terbaru dalam desain digital. Kami berkomitmen untuk memberikan hasil yang tidak hanya indah dilihat, tetapi juga fungsional dan efektif untuk mencapai tujuan digital Anda.</p>
+                    <p class="tagline">Linkify: Simplify. Connect. Impress.</p>
+                </div>
+                <div class="about-img">
+                    <div style="background: linear-gradient(135deg, var(--primary), var(--accent)); width: 100%; height: 350px; border-radius: 10px; display: flex; align-items: center; justify-content: center; position: relative;">
+                        <div style="background: white; width: 250px; height: 250px; border-radius: 15px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+                            <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                                <div style="width: 50px; height: 50px; background: var(--primary); border-radius: 10px; margin-right: 10px; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-link" style="color: white; font-size: 1.5rem;"></i>
+                                </div>
+                                <div>
+                                    <h4 style="margin: 0; color: var(--dark);">John Doe</h4>
+                                    <p style="margin: 0; color: #666; font-size: 0.9rem;">Digital Marketer</p>
+                                </div>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                <div style="background: #f0f5ff; padding: 10px; border-radius: 8px; text-align: center;">
+                                    <i class="fab fa-instagram" style="color: #E1306C;"></i>
+                                    <p style="margin: 5px 0 0; font-size: 0.8rem;">Instagram</p>
+                                </div>
+                                <div style="background: #f0f5ff; padding: 10px; border-radius: 8px; text-align: center;">
+                                    <i class="fab fa-whatsapp" style="color: #25D366;"></i>
+                                    <p style="margin: 5px 0 0; font-size: 0.8rem;">WhatsApp</p>
+                                </div>
+                                <div style="background: #f0f5ff; padding: 10px; border-radius: 8px; text-align: center;">
+                                    <i class="fas fa-globe" style="color: var(--primary);"></i>
+                                    <p style="margin: 5px 0 0; font-size: 0.8rem;">Website</p>
+                                </div>
+                                <div style="background: #f0f5ff; padding: 10px; border-radius: 8px; text-align: center;">
+                                    <i class="fas fa-envelope" style="color: #EA4335;"></i>
+                                    <p style="margin: 5px 0 0; font-size: 0.8rem;">Email</p>
+                                </div>
+                            </div>
+                            <div style="margin-top: 15px; text-align: center;">
+                                <div style="background: #f0f0f0; width: 100px; height: 100px; margin: 0 auto; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-qrcode" style="font-size: 2.5rem; color: var(--dark);"></i>
+                                </div>
+                                <p style="margin: 10px 0 0; font-size: 0.8rem; color: #666;">Scan untuk info lengkap</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="features">
+                <div class="feature">
+                    <i class="fas fa-bolt"></i>
+                    <h3>Cepat & Mudah</h3>
+                    <p>Proses pembuatan hanya 3-5 hari kerja. Dashboard sederhana untuk mengelola konten Anda kapan saja.</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-paint-brush"></i>
+                    <h3>Desain Custom</h3>
+                    <p>Setiap desain dibuat khusus sesuai branding Anda. Responsif di semua perangkat.</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Analitik Real-time</h3>
+                    <p>Pantau performa link Anda dengan analitik lengkap: klik, lokasi, perangkat, dan lebih banyak lagi.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio -->
+    <section id="portfolio">
+        <div class="container">
+            <h2>Portfolio Linkify</h2>
+            <p style="text-align: center; max-width: 800px; margin: 0 auto 40px;">Beberapa contoh link-bio dan kartu digital yang telah kami buat untuk berbagai profesi dan bisnis.</p>
+            
+            <div class="portfolio-filter">
+                <button class="filter-btn active" data-filter="all">Semua</button>
+                <button class="filter-btn" data-filter="link-bio">Link-Bio</button>
+                <button class="filter-btn" data-filter="digital-card">Kartu Digital</button>
+                <button class="filter-btn" data-filter="corporate">Corporate</button>
+            </div>
+            
+            <div class="portfolio-grid">
+                <!-- Portfolio Item 1 -->
+                <div class="portfolio-item" data-category="link-bio">
+                    <div class="portfolio-overlay" style="background: url('https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80') center/cover;"></div>
+                    <div class="portfolio-info">
+                        <h3>Link-Bio Fotografer</h3>
+                        <p>Link-bio untuk fotografer profesional dengan galeri portofolio terintegrasi dan booking client.</p>
+                        <span class="tagline" style="color: var(--accent); font-size: 0.9rem;">linkify.com/marcusphoto</span>
+                    </div>
+                </div>
+                
+                <!-- Portfolio Item 2 -->
+                <div class="portfolio-item" data-category="digital-card">
+                    <div class="portfolio-overlay" style="background: url('https://images.unsplash.com/photo-1551836026-d5c2c5af78e4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80') center/cover;"></div>
+                    <div class="portfolio-info">
+                        <h3>Kartu Digital Konsultan</h3>
+                        <p>Kartu nama digital dengan fitur booking appointment, testimonial, dan portofolio case study.</p>
+                        <span class="tagline" style="color: var(--accent); font-size: 0.9rem;">card.linkify.com/consultant</span>
+                    </div>
+                </div>
+                
+                <!-- Portfolio Item 3 -->
+                <div class="portfolio-item" data-category="corporate">
+                    <div class="portfolio-overlay" style="background: url('https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w-800&q=80') center/cover;"></div>
+                    <div class="portfolio-info">
+                        <h3>Link-Bio Perusahaan</h3>
+                        <p>Solusi link-bio untuk perusahaan dengan multiple department, kontak, dan informasi produk.</p>
+                        <span class="tagline" style="color: var(--accent); font-size: 0.9rem;">linkify.com/techcorp</span>
+                    </div>
+                </div>
+                
+                <!-- Portfolio Item 4 -->
+                <div class="portfolio-item" data-category="link-bio">
+                    <div class="portfolio-overlay" style="background: url('https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80') center/cover;"></div>
+                    <div class="portfolio-info">
+                        <h3>Link-Bio Musisi</h3>
+                        <p>Link-bio dengan integrasi Spotify, YouTube, dan platform musik lainnya untuk musisi indie.</p>
+                        <span class="tagline" style="color: var(--accent); font-size: 0.9rem;">linkify.com/indieband</span>
+                    </div>
+                </div>
+                
+                <!-- Portfolio Item 5 -->
+                <div class="portfolio-item" data-category="digital-card">
+                    <div class="portfolio-overlay" style="background: url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80') center/cover;"></div>
+                    <div class="portfolio-info">
+                        <h3>Kartu Digital Real Estate</h3>
+                        <p>Kartu digital untuk agen real estate dengan katalog properti, virtual tour, dan mortgage calculator.</p>
+                        <span class="tagline" style="color: var(--accent); font-size: 0.9rem;">card.linkify.com/realestate</span>
+                    </div>
+                </div>
+                
+                <!-- Portfolio Item 6 -->
+                <div class="portfolio-item" data-category="corporate">
+                    <div class="portfolio-overlay" style="background: url('https://images.unsplash.com/photo-1556761175-b413da4baf72?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80') center/cover;"></div>
+                    <div class="portfolio-info">
+                        <h3>Kartu Digital Startup</h3>
+                        <p>Kartu nama digital untuk tim startup dengan link ke produk, media sosial, dan investor pitch.</p>
+                        <span class="tagline" style="color: var(--accent); font-size: 0.9rem;">card.linkify.com/startup</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact">
+        <div class="container">
+            <h2>Kontak Kami</h2>
+            <div class="contact-preview-container">
+                <div class="contact-form">
+                    <h3>Hubungi Linkify</h3>
+                    <p>Konsultasi gratis! Ceritakan kebutuhan Anda dan kami akan siap membantu.</p>
+                    
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="name">Nama Lengkap</label>
+                            <input type="text" id="name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="service">Layanan yang Diminati</label>
+                            <select id="service" style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem;">
+                                <option value="link-bio">Link-Bio</option>
+                                <option value="digital-card">Kartu Nama Digital</option>
+                                <option value="both">Keduanya</option>
+                                <option value="consultation">Konsultasi Gratis</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">Pesan</label>
+                            <textarea id="message" placeholder="Ceritakan tentang bisnis/profesi Anda dan kebutuhan spesifik..." required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn">Kirim Pesan</button>
+                    </form>
+                </div>
+                
+                <div class="preview-rating">
+                    <div class="preview-container">
+                        <h3>Preview Linkify</h3>
+                        <p>Scan QR code berikut untuk melihat contoh link-bio yang kami buat:</p>
+                        <div class="preview-qr">
+                            <i class="fas fa-qrcode"></i>
+                        </div>
+                        <p><strong>linkify.com/demo</strong></p>
+                        <p style="font-size: 0.9rem; color: #666; margin-bottom: 20px;">Atau kunjungi langsung: <a href="#" style="color: var(--primary);">linkify.com/demo</a></p>
+                        <a href="#" class="btn btn-accent">Lihat Demo Live</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rating & Testimonial Section Horizontal -->
+    <section class="rating-section">
+        <div class="container">
+            <div class="rating-container-horizontal">
+                <div class="rating-left">
+                    <div class="rating-box">
+                        <div class="rating-stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <div class="rating-value">4.8</div>
+                        <div class="rating-count">Berdasarkan 142 ulasan klien</div>
+                    </div>
+                </div>
+                
+                <div class="rating-right">
+                    <div class="testimonials-container">
+                        <div class="testimonial-horizontal">
+                            <div class="testimonial-text">
+                                "Linkify benar-benar menyederhanakan kehadiran digital saya. Sebagai konsultan, klien sekarang bisa akses semua informasi tentang saya dengan sekali klik. Desainnya sangat profesional!"
+                            </div>
+                            <div class="testimonial-author-horizontal">
+                                <div class="author-avatar">BS</div>
+                                <div class="author-info">
+                                    <h4>Budi Santoso</h4>
+                                    <p>Konsultan Bisnis Digital</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="testimonial-horizontal">
+                            <div class="testimonial-text">
+                                "Prosesnya cepat, hasilnya melebihi ekspektasi. Kartu digital dari Linkify membuat networking lebih efektif. QR code-nya sangat membantu saat event bisnis."
+                            </div>
+                            <div class="testimonial-author-horizontal">
+                                <div class="author-avatar">SD</div>
+                                <div class="author-info">
+                                    <h4>Sari Dewi</h4>
+                                    <p>Marketing Manager</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="testimonial-horizontal">
+                            <div class="testimonial-text">
+                                "Sebagai musisi indie, Linkify membantu saya memusatkan semua platform musik dan media sosial. Peningkatan traffic ke Spotify saya mencapai 40% setelah menggunakan link-bio mereka."
+                            </div>
+                            <div class="testimonial-author-horizontal">
+                                <div class="author-avatar">RA</div>
+                                <div class="author-info">
+                                    <h4>Rizky Aditya</h4>
+                                    <p>Musisi Indie</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="testimonial-horizontal">
+                            <div class="testimonial-text">
+                                "Tim Linkify sangat responsif dan memahami kebutuhan bisnis saya. Kartu digital mereka membantu tim sales kami terlihat lebih profesional di mata klien."
+                            </div>
+                            <div class="testimonial-author-horizontal">
+                                <div class="author-avatar">AL</div>
+                                <div class="author-info">
+                                    <h4>Andi Lesmana</h4>
+                                    <p>Pemilik Startup Tech</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Linkify</h3>
+                    <p>Simplify Your Digital Presence. Kami membantu individu dan bisnis menyederhanakan kehadiran digital dengan link-bio dan kartu nama digital yang elegan dan fungsional.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Layanan</h3>
+                    <ul style="list-style: none;">
+                        <li style="margin-bottom: 10px;"><a href="#portfolio" style="color: #ddd; text-decoration: none;">Pembuatan Link-Bio</a></li>
+                        <li style="margin-bottom: 10px;"><a href="#portfolio" style="color: #ddd; text-decoration: none;">Kartu Nama Digital</a></li>
+                        <li style="margin-bottom: 10px;"><a href="#portfolio" style="color: #ddd; text-decoration: none;">Custom Design</a></li>
+                        <li style="margin-bottom: 10px;"><a href="#contact" style="color: #ddd; text-decoration: none;">Konsultasi Gratis</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Hubungi Kami</h3>
+                    <p><i class="fas fa-map-marker-alt" style="margin-right: 10px;"></i> Jakarta, Indonesia</p>
+                    <p><i class="fas fa-phone" style="margin-right: 10px;"></i> +62 812 3456 7890</p>
+                    <p><i class="fas fa-envelope" style="margin-right: 10px;"></i> hello@linkify.com</p>
+                    <p><i class="fas fa-clock" style="margin-right: 10px;"></i> Senin - Jumat: 9:00 - 17:00</p>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 Linkify. Simplify Your Digital Presence. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Navigation Toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+        
+        // Close mobile nav when clicking on a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+        
+        // Portfolio Filtering
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const portfolioItems = document.querySelectorAll('.portfolio-item');
+        
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to clicked button
+                button.classList.add('active');
+                
+                const filterValue = button.getAttribute('data-filter');
+                
+                portfolioItems.forEach(item => {
+                    if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+        
+        // Contact Form Submission
+        const contactForm = document.getElementById('contactForm');
+        
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Get form values
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const service = document.getElementById('service').value;
+            const message = document.getElementById('message').value;
+            
+            // In a real application, you would send this data to a server
+            // For this example, we'll just show an alert
+            alert(`Terima kasih ${name}! Pesan Anda telah dikirim ke Linkify. Kami akan menghubungi Anda di ${email} dalam 1x24 jam mengenai layanan ${service}.`);
+            
+            // Reset form
+            contactForm.reset();
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Auto-scroll testimonials
+        let scrollPosition = 0;
+        const testimonialsContainer = document.querySelector('.testimonials-container');
+        
+        function autoScrollTestimonials() {
+            if (testimonialsContainer) {
+                const scrollWidth = testimonialsContainer.scrollWidth;
+                const clientWidth = testimonialsContainer.clientWidth;
+                
+                if (scrollWidth > clientWidth) {
+                    scrollPosition += 1;
+                    
+                    if (scrollPosition > scrollWidth - clientWidth) {
+                        scrollPosition = 0;
+                    }
+                    
+                    testimonialsContainer.scrollLeft = scrollPosition;
+                }
+            }
+        }
+        
+        // Start auto-scroll if container exists
+        if (document.querySelector('.testimonials-container')) {
+            setInterval(autoScrollTestimonials, 30);
+        }
+    </script>
+</body>
+</html>
